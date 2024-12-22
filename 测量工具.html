@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIS地图助手 - 测量工具</title>
+    <link rel="stylesheet" href="./css/celiang.css" />
+    <!-- 引入自定义的样式文件，用于定义页面的整体样式 -->
+    <!-- 设置高德地图 JS API 安全密钥 -->
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: '22df78af295a16c740e9bc459e3c7119'
+        };
+    </script>
+    <!-- 引入高德地图 JS API 2.0 脚本以及各类插件 -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=96a371a1a4fbbff0c0467680af0ababe&plugin=AMap.MouseTool,AMap.Driving,AMap.Transfer,AMap.Walking"></script>
+    <script src="https://webapi.amap.com/loca?v=2.0.0&key=96a371a1a4fbbff0c0467680af0ababe"></script>
+    <script src="http://webapi.amap.com/ui/1.1/main.js?v=1.1.1"></script>
+</head>
+
+<body>
+    <!-- 地图容器，添加类名用于样式设置，使其占满整个页面 -->
+    <div id="container" class="map-container"></div>
+    <h3 id="title">GIS地图助手 - 测量工具</h3>
+    <!-- 测量功能窗口，添加类名用于样式设置，使其呈现为卡片样式 -->
+    <div id="measure_window" class="measure-card">
+        <h4>测量工具</h4>
+        <div class="button-group">
+            <button id="measure_button_start">开始测量</button>
+            <button id="measure_button_stop">结束测量</button>
+        </div>
+        <!-- 添加提醒文本内容的div -->
+        <div class="reminder-text">
+            <p>温馨提示：</p>
+            <p>1. 测量结果仅供参考，实际距离可能因地图比例尺等因素存在一定误差。</p>
+            <p>2. 右击开始测量，左击结束测量。</p>
+            <p>3. 每次测量结束后，可刷新地图清除本次测量绘制的线条。</p>
+        </div>
+    </div>
+
+    <script>
+        // 创建地图实例
+        const map = new AMap.Map('container', {
+            zoom: 10,
+            center: [116.397428, 39.90923], // 默认中心点: 北京天安门
+        });
+        // 测量工具
+        let measureActive = false;
+        let measureOverlay = null; // 用于存储测量工具创建的覆盖物
+        document.getElementById('measure_button_start').onclick = function () {
+            if (!measureActive) {
+                measureActive = true;
+                const mouseTool = new AMap.MouseTool(map);
+                mouseTool.rule({
+                    rulerOptions: {
+                        renderOptions: {
+                            strokeColor: '#FF33FF',
+                            strokeWeight: 2
+                        },
+                        unit: 'metric'
+                    }
+                });
+                alert('测量工具已开启');
+            } else {
+                alert('测量工具已在运行');
+            }
+        };
+        document.getElementById('measure_button_stop').onclick = function () {
+            if (measureActive) {
+                const mouseTool = new AMap.MouseTool(map);
+                mouseTool.close();
+                if (measureOverlay) {
+                    map.remove([measureOverlay]); // 清除地图上的测量覆盖物
+                }
+                measureActive = false;
+                alert('测量工具已结束');
+            } else {
+                alert('测量工具未运行');
+            }
+        };
+
+        // 监听测量结束事件，获取并存储测量结果
+        map.on('draw', function (e) {
+            measureOverlay = e.obj; // 存储测量工具创建的覆盖物
+        });
+    </script>
+
+</body>
+
+</html>

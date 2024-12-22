@@ -1,0 +1,78 @@
+/* 让地图容器占满整个页面 */
+.map-container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/* 导航卡片整体样式 */
+.navigation-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 1;
+}
+
+/* 标题样式 */
+.navigation-card h4 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* 功能名称文本样式 */
+.function-name {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* 单选按钮组样式 */
+.radio-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* 单选按钮样式 */
+.radio-group input[type="radio"] {
+    margin-right: 5px;
+}
+
+/* 输入框列表样式 */
+.input-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.input-list li {
+    margin-bottom: 10px;
+}
+
+/* 输入框样式 */
+.input-list input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* 按钮样式 */
+.input-list button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.input-list button:hover {
+    background-color: #0056b3;
+}

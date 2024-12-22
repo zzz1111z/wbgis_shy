@@ -1,0 +1,62 @@
+/* 让地图容器占满整个页面 */
+.map-container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+/* 绘图功能窗口卡片整体样式 */
+.draw-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 1;
+}
+
+/* 绘图功能窗口标题样式 */
+.draw-card h4 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* 按钮组样式，用于包裹开始和结束绘图按钮 */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+/* 绘图功能窗口内按钮通用样式 */
+.draw-card button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+/* 按钮悬停效果 */
+.draw-card button:hover {
+    background-color: #0056b3;
+}
+
+/* 提醒文本区域整体样式 */
+.draw-card .reminder-text {
+    margin-top: 15px;
+}
+
+/* 提醒文本的段落样式 */
+.draw-card .reminder-text p {
+    margin: 0;
+    font-size: 14px;
+    color: #6f6c6c;
+    line-height: 1.5;
+}

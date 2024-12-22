@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIS地图助手 - 路线规划导航</title>
+    <!-- 引入外部CSS文件来定义样式 -->
+    <link rel="stylesheet" href="css/daohang.css">
+    <!-- 设置高德地图 JS API 安全密钥 -->
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: '22df78af295a16c740e9bc459e3c7119'
+        };
+    </script>
+    <!-- 引入高德地图 JS API 2.0 脚本以及各类插件 -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=96a371a1a4fbbff0c0467680af0ababe&plugin=AMap.MouseTool,AMap.Driving,AMap.Transfer,AMap.Walking"></script>
+    <script src="https://webapi.amap.com/loca?v=2.0.0&key=96a371a1a4fbbff0c0467680af0ababe"></script>
+    <script src="http://webapi.amap.com/ui/1.1/main.js?v=1.1.1"></script>
+</head>
+
+<body>
+    <!-- 地图容器，添加类名用于样式设置 -->
+    <div id="container" class="map-container"></div>
+    <h3 id="title">GIS地图助手 - 路线规划导航</h3>
+    <!-- 导航功能窗口，添加类名用于样式设置 -->
+    <div id="navigation_window" class="navigation-card">
+        <div class="function-name">输入地点:</div>
+        <ul class="input-list">
+            <li>
+                <div class="nav-text">起点</div>
+                <input type="text" id="startName" placeholder="请输入起点">
+            </li>
+            <li>
+                <div class="nav-text">终点</div>
+                <input type="text" id="endName" placeholder="请输入终点">
+            </li>
+            <li>
+                <button id="navigation_button_start">开始导航</button>
+                <button id="navigation_button_stop">结束导航</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        // 创建地图实例
+        const map = new AMap.Map('container', {
+            zoom: 10,
+            center: [116.397428, 39.90923], // 默认中心点: 北京天安门
+        });
+        // 路线导航功能
+        const driving = new AMap.Driving({
+            map: map
+        });
+        let drivingResult;
+        document.getElementById('navigation_button_start').onclick = function () {
+            const startName = document.getElementById('startName').value;
+            const endName = document.getElementById('endName').value;
+            if (startName && endName) {
+                AMap.plugin('AMap.Geocoder', function () {
+                    const geocoder = new AMap.Geocoder();
+                    // 获取起点和终点的坐标
+                    geocoder.getLocation(startName, function (status, result) {
+                        if (status === 'complete' && result.geocodes.length) {
+                            const startLngLat = result.geocodes[0].location;
+                            geocoder.getLocation(endName, function (status, result) {
+                                if (status === 'complete' && result.geocodes.length) {
+                                    const endLngLat = result.geocodes[0].location;
+                                    // 搜索导航路线
+                                    driving.search(startLngLat, endLngLat, function (status, result) {
+                                        if (status === 'complete') {
+                                            drivingResult = result;
+                                            const distance = result.routes[0].distance;
+                                            alert(`导航已开始，预计距离：${(distance / 1000).toFixed(2)}公里`);
+                                        }
+                                    });
+                                } else {
+                                    alert('终点地址解析失败');
+                                }
+                            });
+                        } else {
+                            alert('起点地址解析失败');
+                        }
+                    });
+                });
+            } else {
+                alert('请输入起点和终点地址');
+            }
+        };
+
+        document.getElementById('navigation_button_stop').onclick = function () {
+            if (drivingResult) {
+                driving.clear();
+                alert('导航已结束');
+            } else {
+                alert('没有正在进行的导航');
+            }
+        };
+    </script>
+</body>
+
+</html>

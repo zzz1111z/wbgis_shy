@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>绘制剖面图</title>
+
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+        #infoDiv {
+            position: absolute;
+            top: 15px;
+            left: 60px;
+        }
+
+        #infoDiv input {
+            border: none;
+            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px;
+        }
+        #optionsDiv {
+            background-color: white;
+            color: black;
+            padding: 6px;
+            max-width: 800px;
+        }
+        #info {
+            padding: 5px;
+            margin: 5px;
+            width: 120px;
+            text-align: center;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://jsdev.arcgis.com/4.27/esri/themes/light/main.css" />
+    <script src="https://jsdev.arcgis.com/4.27/"></script>
+</head>
+
+<body>
+    <div id="viewDiv"></div>
+
+    <script>
+        require([
+            "esri/Map",
+            "esri/layers/SceneLayer",
+            "esri/views/SceneView",
+            "esri/widgets/ElevationProfile",
+            "esri/widgets/Search"
+        ], (Map, SceneLayer, SceneView, ElevationProfile, Search) => {
+            // 创建一个场景图层（假设这里是代表中国部分的地图数据）
+            const sceneLayer = new SceneLayer({
+                // 设置代表中国部分地图数据的 portalItem id 或其他方式获取数据的配置
+                portalItem: {
+                    id: "your_china_map_item_id"
+                },
+                popupEnabled: false
+            });
+            // 创建 MeshSymbol3D 用于符号化场景图层
+            const symbol = {
+                type: "mesh-3d",
+                symbolLayers: [
+                    {
+                        type: "fill",
+                        material: {
+                            color: [244, 247, 134]
+                        }
+                    }
+                ]
+            }
+            // 将渲染器添加到场景图层
+            sceneLayer.renderer = {
+                type: "simple",
+                symbol: symbol
+            };
+            // 创建基础地图实例并添加场景图层
+            const mainMap = new Map({
+                basemap: "hybrid",
+                ground: "world-elevation",
+                layers: [sceneLayer]
+            });
+            // 创建 3D 视图实例，设置容器和地图
+            const sceneView = new SceneView({
+                container: "viewDiv",
+                map: mainMap,
+                zoom: 12,
+                center: [116.4074, 39.9042] // 设置一个大概的中国中心坐标
+            });
+            // 创建高程剖析组件实例并配置剖面线类型和可见元素
+            const elevationProfile = new ElevationProfile({
+                view: sceneView,
+                profiles: [
+                    {
+                        type: "ground"
+                    },
+                    {
+                        type: "view"
+                    }
+                ],
+                visibleElements: {
+                    selectButton: false
+                }
+            });
+            // 将高程剖析组件添加到 3D 视图的界面右上角
+            sceneView.ui.add(elevationProfile, "top-right");
+
+            // 创建搜索组件实例并将其添加到 3D 视图的左上角
+            const searchWidget = new Search({
+                view: sceneView
+            });
+            sceneView.ui.add(searchWidget, "top-left");
+
+            // 视图加载完成后的回调函数，可在此处进行其他初始化操作
+            sceneView.when(() => {
+                // 这里可以添加更多的地图图层、执行其他视图相关设置等
+            });
+        });
+    </script>
+</body>
+
+</html>

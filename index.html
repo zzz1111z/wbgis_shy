@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"="width=device-width, initial-scale=1.0">
+    <title>GIS地图助手</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #87CEFA;
+            color: white;
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+      .header-icon {
+            width: 4em;
+            height: auto;
+            margin-left: 20px;
+            vertical-align: middle;
+        }
+
+      .header-title {
+            margin-left: 120px;
+        }
+
+      .navbar {
+            display: flex;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            margin-right: 20px;
+        }
+
+      .navbar li {
+            margin: 0 15px;
+        }
+
+      .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+      .navbar a:hover {
+            text-decoration: underline;
+        }
+
+      .intro-carousel-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+            flex-direction: row;
+        }
+
+      .intro-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 47.5%;
+            height: 357px;
+        }
+
+      .carousel-container {
+            width: 47.5%;
+            overflow: hidden;
+            position: relative;
+        }
+
+      .carousel-slide {
+            display: none;
+            width: 100%;
+        }
+
+      .carousel-slide.active {
+            display: block;
+        }
+
+      .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+      .carousel-button.prev {
+            left: 10px;
+        }
+
+      .carousel-button.next {
+            right: 10px;
+        }
+
+      .carousel-dots {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+      .carousel-dots span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+      .carousel-dots span.active {
+            background-color: #87CEFA;
+        }
+
+      .separator {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+      .separator-line {
+            width: 100%;
+            height: 50px;
+            background-color: #87CEFA
+        }
+
+      .separator-text {
+            color: white;
+            font-size: 1.5em;
+            margin-left: 20px;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+      .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+      .product-card button.enter-button {
+            width: 120px;
+            height: 40px;
+            background-color: #a3c8ef;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+      .product-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 20%;
+            margin: 10px;
+            text-align: center;
+            padding: 15px;
+        }
+
+      .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+      .product-card h3 {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+      .product-card p {
+            color: #555;
+            margin: 10px 0;
+        }
+
+      .product-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+      .product-card.enter-button:hover {
+            background-color: #4b94cb;
+            transition: background-color 0.3s ease;
+        }
+
+        footer {
+            text-align: center;
+            padding: 5px;
+            background-color: #87CEFA;
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <img src="前端监控灰色.svg" alt="地图图标" class="header-icon" />
+        <h1 class="header-title">GIS地图助手</h1>
+        <ul class="navbar">
+            <li><a href="#">首页</a></li>
+            <li><a href="#" onclick="scrollToFunction()">功能实现</a></li>
+            <li><a href="#" onclick="scrollToContact()">联系我们</a></li>
+        </ul>
+    </header>
+
+    <div class="intro-carousel-wrapper">
+        <div class="intro-container">
+            <h2>关于GIS地图助手</h2>
+            <p>GIS地图助手是一款功能强大且极具创新性的地理信息系统辅助工具，专为满足不同用户在地理信息处理与分析方面的多样化需求而打造。</p>
+            <h3>具备功能</h3>
+            <p>绘制剖面图：围绕3D的地图视图展开，聚焦高程剖析功能，旨在帮助用户直观地查看地理高程信息。</p>
+            <p>规划导航：借助高德地图的API，为用户提供便捷的路线规划导航服务，让用户出行更方便。</p>
+            <p>测量工具：借助高德地图的API，为用户提供便捷、直观的地图测量服务，帮助用户轻松获取地图上相关地理要素的距离测量数据。</p>
+            <p>绘图工具：借助高德地图的API，为用户提供了便捷的地图绘图功能，方便用户在地图上绘制各种图形。</p>
+        </div>
+
+        <div class="carousel-container" id="carouselContainer">
+            <img class="carousel-slide active" src="images/1.jpg" alt="示例图片1">
+            <img class="carousel-slide" src="images/2.jpg" alt="示例图片2">
+            <img class="carousel-slide" src="images/3.jpg" alt="示例图片3">
+            <button class="carousel-button prev">&#10094;</button>
+            <button class="carousel-button next">&#10095;</button>
+            <div class="carousel-dots">
+                <span class="active"></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="separator">
+        <span class="separator-text">功能实现</span>
+        <div class="separator-line"></div>
+    </div>
+
+    <div class="product-container">
+        <div class="product-card">
+            <img src="images/剖面图2.svg" alt="绘制剖面图">
+            <h3>绘制剖面图</h3>
+            <p>3D地图，探析剖面</p>
+            <button onclick="window.location.href='绘制剖面图.html'" class="enter-button">进入</button>
+        </div>
+
+        <div class="product-card">
+            <img src="images/车辆导航.svg" alt="产品1">
+            <h3>规划导航</h3>
+            <p>地图导航，出行无忧</p>
+            <button onclick="window.location.href='规划导航.html'" class="enter-button">进入</button>
+        </div>
+
+        <div class="product-card">
+            <img src="images/距离测量.svg" alt="产品2">
+            <h3>测量工具</h3>
+            <p>距离测量，地理标尺</p>
+            <button onclick="window.location.href='测量工具.html'" class="enter-button">进入</button>
+        </div>
+
+        <div class="product-card">
+            <img src="images/测量工具.svg" alt="产品3">
+            <h3>绘图工具</h3>
+            <p>网页绘图，地理妙笔</p>
+            <button onclick="window.location.href='绘画工具.html'" class="enter-button">进入</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>如果有问题，请联系我们：LNU地信小分队</p>
+    </footer>
+
+    <script>
+        const carouselSlides = document.querySelectorAll('.carousel-slide');
+        const carouselDots = document.querySelectorAll('.carousel-dots span');
+        const prevButton = document.querySelector('.carousel-button.prev');
+        const nextButton = document.querySelector('.carousel-button.next');
+        const carouselContainer = document.getElementById('carouselContainer');
+
+        let currentIndex = 0;
+        let autoPlayInterval;
+
+        function showSlide(index) {
+            carouselSlides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            carouselDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % carouselSlides.length;
+            showSlide(currentIndex);
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + carouselSlides.length) % carouselSlides.length;
+            showSlide(currentIndex);
+        }
+
+        prevButton.addEventListener('click', prevSlide);
+        nextButton.addEventListener('click', nextSlide);
+
+        carouselDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentIndex = index;
+                showSlide(currentIndex);
+            });
+        });
+
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(nextSlide, 5000);
+        }
+
+        function stopAutoPlay() {
+            clearInterval(autoPlayInterval);
+        }
+
+        // 初始化时开始自动播放
+        startAutoPlay();
+
+        // 当用户手动点击按钮或指示点时暂停自动播放，一段时间后恢复
+        carouselContainer.addEventListener('mouseover', stopAutoPlay);
+        carouselContainer.addEventListener('mouseout', () => setTimeout(startAutoPlay, 5000));
+
+        function scrollToFunction() {
+            const functionSeparator = document.querySelector('.separator');
+            if (functionSeparator) {
+                functionSeparator.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function scrollToContact() {
+            const contactFooter = document.querySelector('footer');
+            if (contactFooter) {
+                contactFooter.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+
+</body>
+
+</html>
